@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -19,7 +19,7 @@ import FlexBetween from "components/FlexBetween";
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
-  email: yup.string().email("Invalid Email").required("required"),
+  email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
   location: yup.string().required("required"),
   occupation: yup.string().required("required"),
@@ -27,11 +27,11 @@ const registerSchema = yup.object().shape({
 });
 
 const loginSchema = yup.object().shape({
-  email: yup.string().email("Invalid Email").required("required"),
+  email: yup.string().email("invalid email").required("required"),
   password: yup.string().required("required"),
 });
 
-const initialValueRegister = {
+const initialValuesRegister = {
   firstName: "",
   lastName: "",
   email: "",
@@ -48,16 +48,15 @@ const initialValuesLogin = {
 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
-
   const { palette } = useTheme();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isNonMobile = useMediaQuery("(min-width: 600px)");
+  const navigate = useNavigate();
+  const isNonMobile = useMediaQuery("(min-width:600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
-    // this allow us to send form info with image
+    // this allows us to send form info with image
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
@@ -106,7 +105,7 @@ const Form = () => {
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={isLogin ? initialValuesLogin : initialValueRegister}
+      initialValues={isLogin ? initialValuesLogin : initialValuesRegister}
       validationSchema={isLogin ? loginSchema : registerSchema}
     >
       {({
@@ -118,14 +117,14 @@ const Form = () => {
         handleSubmit,
         setFieldValue,
         resetForm,
-      }) => {
+      }) => (
         <form onSubmit={handleSubmit}>
           <Box
             display="grid"
             gap="30px"
-            gridTemplateColumns="repeat(4, maximum(0, 1fr))"
+            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
             sx={{
-              "& > div": { gridColum: isNonMobile ? undefined : "span 4" },
+              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
             }}
           >
             {isRegister && (
@@ -183,9 +182,9 @@ const Form = () => {
                   <Dropzone
                     acceptedFiles=".jpg,.jpeg,.png"
                     multiple={false}
-                    onDrop={(acceptedFiles) => {
-                      setFieldValue("picture", acceptedFiles[0]);
-                    }}
+                    onDrop={(acceptedFiles) =>
+                      setFieldValue("picture", acceptedFiles[0])
+                    }
                   >
                     {({ getRootProps, getInputProps }) => (
                       <Box
@@ -196,7 +195,7 @@ const Form = () => {
                       >
                         <input {...getInputProps()} />
                         {!values.picture ? (
-                          <p>Add picture Here</p>
+                          <p>Add Picture Here</p>
                         ) : (
                           <FlexBetween>
                             <Typography>{values.picture.name}</Typography>
@@ -209,6 +208,7 @@ const Form = () => {
                 </Box>
               </>
             )}
+
             <TextField
               label="Email"
               onBlur={handleBlur}
@@ -231,7 +231,8 @@ const Form = () => {
               sx={{ gridColumn: "span 4" }}
             />
           </Box>
-          {/* BUTTON */}
+
+          {/* BUTTONS */}
           <Box>
             <Button
               fullWidth
@@ -244,28 +245,29 @@ const Form = () => {
                 "&:hover": { color: palette.primary.main },
               }}
             >
-              <Typography
-                onClick={() => {
-                  setPageType(isLogin ? "register" : "login");
-                  resetForm();
-                }}
-                sx={{
-                  textDecoration: "underline",
-                  color: palette.primary.main,
-                  "&:hover": {
-                    cursor: "pointer",
-                    color: palette.primary.light,
-                  },
-                }}
-              >
-                {isLogin
-                  ? "Don't have an account? Signup here"
-                  : "Already have an account? Login here"}
-              </Typography>
+              {isLogin ? "LOGIN" : "REGISTER"}
             </Button>
+            <Typography
+              onClick={() => {
+                setPageType(isLogin ? "register" : "login");
+                resetForm();
+              }}
+              sx={{
+                textDecoration: "underline",
+                color: palette.primary.main,
+                "&:hover": {
+                  cursor: "pointer",
+                  color: palette.primary.light,
+                },
+              }}
+            >
+              {isLogin
+                ? "Don't have an account? Sign Up here."
+                : "Already have an account? Login here."}
+            </Typography>
           </Box>
-        </form>;
-      }}
+        </form>
+      )}
     </Formik>
   );
 };
