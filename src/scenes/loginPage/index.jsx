@@ -1,11 +1,11 @@
-import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
-import Form from "./Form";
-
 import React from "react";
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
+
+import Form from "./Form";
 
 const LoginPage = () => {
   const theme = useTheme();
-  const isNonMobileScreens = useMediaQuery("min-width:1000px");
+  const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
   return (
     <Box>
@@ -14,11 +14,7 @@ const LoginPage = () => {
         backgroundColor={theme.palette.background.alt}
         p="1rem 6%"
       >
-        <Typography
-          fontWeight="bold"
-          fontSize="clamp(143m, 2rem, 2.24rem)"
-          color="primary"
-        >
+        <Typography fontWeight="bold" fontSize="32px" color="primary">
           SociOpedia
         </Typography>
       </Box>
@@ -29,7 +25,7 @@ const LoginPage = () => {
         borderRadius="1.5rem"
         backgroundColor={theme.palette.background.alt}
       >
-        <Typography fontWeight="500" variant="h5" sx={{ mb: "15rem" }}>
+        <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
           Welcom to Socipedia, The Social Media for SocioPath!
         </Typography>
         <Form />
